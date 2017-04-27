@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <title>登录</title>
+    <style type="text/css">
+    	*{padding: 0;margin: 0;}
+    	body{background: #000;font-size: 14px;color: #fff;font-family: '微软雅黑'}
+    	.header{width: 100%;text-align: center;margin-top: 50px;}
+    	.container{width: 100%;height: 100%;}
+    	.title{width: 280px;text-align: center;margin: 0 auto;letter-spacing: 5px;border-bottom: rgba(255,255,255,0.2) solid 1px;height: 60px;line-height: 60px;font-style: italic;}
+    	.username,.password{width: 280px;height: 50px;border:rgba(255,255,255,0.2) 2px solid !important;border-radius: 50px;margin: 20px auto;position: relative;}
+    	.span{display:inline-block;height: 50px;line-height: 50px;width: 50px;margin-left: 30px;}
+    	.input{height: 30px;border:none;outline: none;background: none;color: #fff;position: absolute;left: 90px;top: 9px;}
+    	#btn{background: #0096e6;width: 280px;height: 50px;line-height: 50px;text-align: center;margin: 10px auto;border-radius: 50px;cursor: pointer;margin-top: 30px;}
+    	input:-webkit-autofill {
+		    -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+		    -webkit-text-fill-color: #fff !important;
+		}
+		input:-moz-autofill {
+		    -moz-box-shadow: 0 0 0px 1000px #000 inset;
+		    -moz-text-fill-color: #fff !important;
+		}
+    </style>
+</head>
+<body>
+<div class="container">
+	<div class="header">
+		<img src="header.jpg" width="280px" />
+	</div>
+	<h1 class='title'>智能看板</h1>
+	<div class="username">
+		<span class='span'>用户名</span>
+		<input class="input" id='username' placeholder='请输入用户名'/>
+	</div>
+	<div class="password">
+		<span class='span'>密码</span>
+		<input class="input" id='password' placeholder='请输入密码' type='password'/>
+	</div>
+	<div id='btn'>登录</div>
+</div>
+</body>
+<script type="text/javascript" src="zepto.min.js"></script>
+<script type="text/javascript" src='alert.js'></script>
+<script type="text/javascript">
+$(function(){
+	if(localStorage.getItem('username')){
+		$("#username").val(localStorage.getItem('username'));
+	}
+	if(localStorage.getItem('password')){
+		$("#password").val(localStorage.getItem('password'));
+	}
+	$("#btn").click(function(){
+		var username = $("#username").val();
+		var password = $("#password").val();
+		if(!username){
+			alert('用户名不能为空',function(){});
+			return;
+		}
+		if(!password){
+			alert('密码不能为空',function(){});
+			return;
+		}
+		var tenant = username.substring(0,4).toLowerCase();
+		login(username,password,tenant);
+	});
+	function login(username, password, tenant){
+		$.ajax({
+			url:'http://120.25.69.229:3000/'+tenant+'/auth/validateLogin',
+			type:'get',
+			dataType:'jsonp',
+			jsonp:'callback',
+			data:{
+				username:username,
+				password:password
+			},
+			success:function(data){
+				localStorage.setItem('tenant',tenant);
+				localStorage.setItem('username',username);
+				localStorage.setItem('password',password);
+				//window.location.href = 'http://localhost:8080?tenant='+tenant;
+				window.location.href = 'index.html?tenant='+tenant;
+			},
+			error:function(err){
+				alert('登录失败');
+			}
+		});
+	}
+});
+</script>
+</html>

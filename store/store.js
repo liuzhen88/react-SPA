@@ -1,0 +1,152 @@
+import {createStore,applyMiddleware} from 'redux';
+import reducers from '../reducers/rootReducer';
+import thunk from 'redux-thunk';
+import actions from '../actions/action';
+
+let orderName = [];
+if(sessionStorage.getItem('orderName')){
+	orderName = JSON.parse(sessionStorage.getItem('orderName'));
+}
+
+let initState = {
+	tableStore:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	baseData:{
+		bz:[],
+		jth:[],
+		czg:[],
+		jgzj:[],
+		cj:[]
+	},
+	dayTable:{
+		startTime:'',
+		endTime:'',
+		bz:'',
+		jgzj:'',
+		jth:'',
+		czg:''
+	},
+	summary:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	meun:{
+		defaultOpenKeys:['sub1'],
+		current:'11'
+	},
+	unqualify:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	workerPerformance:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	title:'',
+	store:{
+		gdzzh:[],
+		jgzj:[]
+	},
+	storeTable:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	orderStatus:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	pie:{
+		plan:[
+			{name:'拉丝',value:10,color:'#ff0000'},
+			{name:'捻股',value:20,color:'#ff9f73'},
+			{name:'合绳',value:30,color:'#1ca9de'}
+		],
+		unQualify:[
+			{name:'拉丝',value:20,color:'#ff0000'},
+			{name:'捻股',value:30,color:'#ff9f73'},
+			{name:'合绳',value:40,color:'#1ca9de'}
+		],
+		store:[
+			{name:'拉丝',value:40,color:'#ff0000'},
+			{name:'捻股',value:40,color:'#ff9f73'},
+			{name:'合绳',value:40,color:'#1ca9de'}
+		]
+	},
+	delay:{
+		columns:[],
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	openMachine:{
+		slikOpenMachinePrecent:{
+			text:'',
+			value:''
+		},
+		twistOpenMachinePrecent:{
+			text:'',
+			value:''
+		},
+		ropeOpenMachinePrecent:{
+			text:'',
+			value:''
+		},
+		onTimeDeliveryPrecent:{
+			text:'',
+			value:''
+		}
+	},
+	reportList:{
+		cj:'全部',
+		bz:'全部',
+		gdcp:'全部',
+		bblx:'月报表',
+		startTime:'',
+		endTime:''
+	},
+	dayReport:{
+		dataSource:[],
+		pagination:{
+			total:1
+		},
+		loading:true
+	},
+	orderName:orderName
+};
+
+let store = createStore(
+	reducers,
+	initState,
+	applyMiddleware(thunk)
+);
+
+
+export default store;
